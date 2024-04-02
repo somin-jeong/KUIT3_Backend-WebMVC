@@ -17,17 +17,16 @@ public class ListUserController extends HttpServlet {
     public static final String USER_SESSION_KEY = "user";
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 세션에 저장된 정보 가져오기
-        HttpSession session = req.getSession();
-        Object value = session.getAttribute(USER_SESSION_KEY);
-        if (value != null) {
-            User user = (User) value;
+        if (isLogined(req.getSession())) {
+            req.setAttribute("users", MemoryUserRepository.getInstance().findAll());
+            RequestDispatcher rd = req.getRequestDispatcher("/user/list.jsp");
+            rd.forward(req,resp);
+            return;
         }
 
-        req.setAttribute("users", MemoryUserRepository.getInstance().findAll());
-
-
-        RequestDispatcher rd = req.getRequestDispatcher("/user/list.jsp");
-        rd.forward(req,resp);
+        resp.sendRedirect("/user/login.jsp");
+    }
+    private boolean isLogined(HttpSession session) {
+        return session.getAttribute(USER_SESSION_KEY) != null;
     }
 }

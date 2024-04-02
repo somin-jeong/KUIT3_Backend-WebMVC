@@ -16,16 +16,20 @@ import java.io.IOException;
 public class LoginController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User findUser = MemoryUserRepository.getInstance().findUserById(req.getParameter("userId"));
-        if (findUser != null && findUser.getPassword().equals(req.getParameter("password"))) {
+        String userId = req.getParameter("userId");
+        String password = req.getParameter("password");
+
+        User findUser = MemoryUserRepository.getInstance().findUserById(userId);
+
+        if (findUser != null && findUser.matchPassword(password)) {
             // 세션 정보 저장
             HttpSession session = req.getSession();
             session.setAttribute("user", findUser);
 
             resp.sendRedirect("/");
-        } else {
-            RequestDispatcher rd = req.getRequestDispatcher("/user/login_failed.jsp");
-            rd.forward(req,resp);
+            return;
         }
+
+        resp.sendRedirect("/user/loginFailed.jsp");
     }
 }
