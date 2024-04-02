@@ -27,7 +27,11 @@
                     </th>
                     <th class="col-md-3">${user.email}
                     </th>
-                    <th class="col-md-3"><a href="/user/updateForm?userId=${user.userId}" class="btn btn-success" role="button">수정</a></th>
+                    <c:choose>
+                        <c:when test="${user == sessionScope.user}">
+                            <th class="col-md-3"><a href="/user/updateForm?userId=${user.userId}" class="btn btn-success" role="button">수정</a></th>
+                        </c:when>
+                    </c:choose>
                 </tr>
             </c:forEach>
             </tbody>

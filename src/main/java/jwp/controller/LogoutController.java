@@ -11,12 +11,10 @@ import java.io.IOException;
 @WebServlet("/user/logout")
 public class LogoutController extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        if (session.getAttribute("user") != null) {
-            //세션 데이터 삭제
-            session.removeAttribute("user");
-            resp.sendRedirect("/");
-        }
+        //세션 데이터 삭제
+        session.removeAttribute("user");
+        resp.sendRedirect("/");
     }
 }
