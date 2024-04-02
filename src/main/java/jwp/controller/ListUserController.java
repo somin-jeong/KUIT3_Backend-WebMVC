@@ -15,7 +15,7 @@ public class ListUserController implements Controller {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (!isLogined(req.getSession())) {
-            return "redirect:/user/login.jsp";
+            return "redirect:/user/loginForm";
         }
         req.setAttribute("users", MemoryUserRepository.getInstance().findAll());
         return "/user/list.jsp";
